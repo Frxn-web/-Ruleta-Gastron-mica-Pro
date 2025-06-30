@@ -46,9 +46,6 @@
     }
     </script>
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiUnVsZXRhIEdhc3Ryb27Ds21pY2EgUHJvIiwic2hvcnRfbmFtZSI6IlJ1bGV0YVBybyIsInRoZW1lX2NvbG9yIjoiI0U3NkY1MSIsImJhY2tncm91bmRfY29sb3IiOiIjRkZGRkZGIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJzdGFydF91cmwiOiIvIiwiaWNvbnMiOlt7InNyYyI6Ii9pY29uLTE5MngxOTIucG5nIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3BuZyJ9LHsic3JjIjoiL2ljb24tNTEyeDUxMi5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ==">
-    
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -361,6 +358,7 @@
             box-shadow: var(--shadow-2xl);
             border: 8px solid white;
             background: #fff;
+            will-change: transform;
         }
         
         .roulette-slice {
@@ -596,6 +594,8 @@
             align-items: center;
             justify-content: center;
             min-height: 60px;
+            cursor: grab;
+            user-select: none;
         }
         
         .option-card:hover {
@@ -1005,6 +1005,7 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.3);
             transform: scale(0.3) rotate(15deg);
             transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            will-change: transform, opacity;
         }
         
         .winner-overlay.show .winner-popup {
@@ -1148,8 +1149,8 @@
             height: 300px;
         }
         
-        /* Confetti Styles */
-        .confetti-container {
+        /* Confetti Canvas */
+        .confetti-canvas {
             position: fixed;
             top: 0;
             left: 0;
@@ -1157,222 +1158,17 @@
             height: 100%;
             pointer-events: none;
             z-index: 9999;
-            overflow: hidden;
         }
         
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #ff6b6b;
-            animation: confetti-fall 3s linear infinite;
-        }
-        
-        .confetti.square {
-            border-radius: 0;
-        }
-        
-        .confetti.circle {
-            border-radius: 50%;
-        }
-        
-        .confetti.triangle {
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-bottom: 10px solid #4ecdc4;
-            background: transparent;
-        }
-        
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-        
-        /* Fireworks */
-        .firework {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            animation: firework-explosion 1s ease-out;
-        }
-        
-        @keyframes firework-explosion {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(2);
-                opacity: 0;
-            }
-        }
-        
-        /* Floating Hearts */
-        .heart {
-            position: absolute;
-            font-size: 20px;
-            color: #ff6b6b;
-            animation: heart-float 3s ease-in-out infinite;
-            pointer-events: none;
-        }
-        
-        @keyframes heart-float {
-            0% {
-                transform: translateY(0) scale(0);
-                opacity: 0;
-            }
-            20% {
-                transform: translateY(-20px) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) scale(0);
-                opacity: 0;
-            }
-        }
-        
-        /* Sparkles */
-        .sparkle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #feca57;
-            border-radius: 50%;
-            animation: sparkle-twinkle 1.5s ease-in-out infinite;
-        }
-        
-        @keyframes sparkle-twinkle {
-            0%, 100% {
-                transform: scale(0) rotate(0deg);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1) rotate(180deg);
-                opacity: 1;
-            }
-        }
-        
-        /* Star burst effect */
-        .starburst {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, #fff 30%, transparent 70%);
-            border-radius: 50%;
-            animation: starburst-expand 2s ease-out;
-        }
-        
-        @keyframes starburst-expand {
-            0% {
-                transform: scale(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(10) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-        
-        .animate-slide-in-left {
-            animation: slideInLeft 0.6s ease forwards;
-        }
-        
-        .animate-scale-in {
-            animation: scaleIn 0.4s ease forwards;
-        }
-        
-        /* Particle Effects */
-        .particles {
+        /* Fireworks Canvas */
+        .fireworks-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: float 6s infinite linear;
-        }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        /* Food Emoji Animations */
-        .food-emoji {
-            display: inline-block;
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
+            z-index: 9998;
         }
         
         /* Accessibility */
@@ -1399,11 +1195,141 @@
                 --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.8);
             }
         }
+        
+        /* Achievements */
+        .achievements-container {
+            background: var(--gray-50);
+            border-radius: var(--radius-3xl);
+            padding: var(--space-12) var(--space-8);
+            margin-top: var(--space-12);
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--space-6);
+        }
+        
+        .achievement-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all var(--transition-normal);
+            border: 1px solid var(--gray-100);
+            opacity: 0.6;
+        }
+        
+        .achievement-card.unlocked {
+            opacity: 1;
+            transform: scale(1.05);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-400);
+        }
+        
+        .achievement-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-4);
+            color: var(--gray-500);
+        }
+        
+        .achievement-card.unlocked .icon {
+            color: var(--accent-600);
+        }
+        
+        .achievement-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: var(--space-2);
+        }
+        
+        .achievement-card p {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+        
+        /* Recipe Preview */
+        .recipe-preview {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-lg);
+            margin-top: var(--space-8);
+            display: none;
+        }
+        
+        .recipe-preview.show {
+            display: block;
+            animation: scaleIn 0.5s ease forwards;
+        }
+        
+        .recipe-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+            margin-bottom: var(--space-6);
+        }
+        
+        .recipe-image {
+            width: 150px;
+            height: 150px;
+            border-radius: var(--radius-xl);
+            background-color: var(--gray-100);
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .recipe-info {
+            flex: 1;
+        }
+        
+        .recipe-title {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+        }
+        
+        .recipe-meta {
+            display: flex;
+            gap: var(--space-6);
+            margin-bottom: var(--space-4);
+        }
+        
+        .recipe-stats {
+            display: flex;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .recipe-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-8);
+        }
+        
+        @media (max-width: 768px) {
+            .recipe-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Dragging styles */
+        .option-card.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+        
+        .option-card.drag-over {
+            background: var(--accent-100);
+            border: 2px dashed var(--accent-500);
+        }
     </style>
 </head>
 <body>
-    <!-- Particles Background -->
-    <div class="particles" id="particles"></div>
+    <!-- Canvas for effects -->
+    <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+    <canvas class="fireworks-canvas" id="fireworksCanvas"></canvas>
     
     <!-- Ad Banner Top -->
     <div class="ad-container ad-top" role="banner" aria-label="Advertisement">
@@ -1549,6 +1475,45 @@
                         </div>
                     </section>
                     
+                    <!-- Recipe Preview -->
+                    <section class="recipe-preview" id="recipePreview">
+                        <div class="recipe-header">
+                            <div class="recipe-image" id="recipeImage"></div>
+                            <div class="recipe-info">
+                                <h2 class="recipe-title" id="recipeTitle"></h2>
+                                <div class="recipe-meta">
+                                    <div id="recipeCuisine"></div>
+                                    <div id="recipeDifficulty"></div>
+                                </div>
+                                <div class="recipe-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-clock"></i>
+                                        <span id="recipeTime"></span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-users"></i>
+                                        <span id="recipeServings"></span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-fire"></i>
+                                        <span id="recipeCalories"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="recipe-content">
+                            <div>
+                                <h3>Ingredientes</h3>
+                                <ul id="recipeIngredients"></ul>
+                            </div>
+                            <div>
+                                <h3>Preparación</h3>
+                                <ol id="recipeInstructions"></ol>
+                            </div>
+                        </div>
+                    </section>
+                    
                     <!-- Statistics Panel -->
                     <section class="stats-panel">
                         <h3 style="text-align: center; margin-bottom: var(--space-6); font-size: 1.5rem;">
@@ -1600,6 +1565,45 @@
                     <!-- Recommendations will be loaded here -->
                 </div>
             </section>
+            
+            <!-- Achievements Section -->
+            <section class="achievements-container">
+                <div class="recommendations-header">
+                    <h2>
+                        <i class="fas fa-trophy"></i>
+                        Tus Logros Gastronómicos
+                    </h2>
+                    <p style="color: var(--gray-600); font-size: 1.125rem;">
+                        Desbloquea logros por usar la ruleta
+                    </p>
+                </div>
+                
+                <div class="achievements-grid" id="achievementsGrid">
+                    <div class="achievement-card" data-id="first-spin">
+                        <div class="icon"><i class="fas fa-star"></i></div>
+                        <h3>Primer Giro</h3>
+                        <p>Realiza tu primer giro en la ruleta</p>
+                    </div>
+                    
+                    <div class="achievement-card" data-id="five-spins">
+                        <div class="icon"><i class="fas fa-utensils"></i></div>
+                        <h3>Gastrónomo</h3>
+                        <p>Realiza 5 giros en la ruleta</p>
+                    </div>
+                    
+                    <div class="achievement-card" data-id="ten-foods">
+                        <div class="icon"><i class="fas fa-plus-circle"></i></div>
+                        <h3>Variedad Culinaria</h3>
+                        <p>Añade 10 opciones diferentes</p>
+                    </div>
+                    
+                    <div class="achievement-card" data-id="daily-streak">
+                        <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+                        <h3>Racha Diaria</h3>
+                        <p>Usa la ruleta 3 días seguidos</p>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
     
@@ -1644,9 +1648,6 @@
         </div>
     </div>
     
-    <!-- Confetti Container -->
-    <div class="confetti-container" id="confettiContainer"></div>
-    
     <script>
         /**
          * Advanced Food Roulette Application
@@ -1656,12 +1657,13 @@
         class FoodRouletteApp {
             constructor() {
                 this.state = {
-                    foods: ['Pizza', 'Tacos', 'Sushi', 'Hamburguesa', 'Pasta'],
+                    foods: this.loadFoods(),
                     isSpinning: false,
                     currentResult: null,
                     userStats: this.loadUserStats(),
                     preferences: this.loadPreferences(),
-                    cookiesAccepted: localStorage.getItem('cookiesAccepted') === 'true'
+                    cookiesAccepted: localStorage.getItem('cookiesAccepted') === 'true',
+                    achievements: this.loadAchievements()
                 };
                 
                 this.config = {
@@ -1674,6 +1676,14 @@
                         '#FF9FF3', '#54A0FF', '#5F27CD', '#00D2D3', '#FF9F43'
                     ]
                 };
+                
+                // Canvas context setup
+                this.confettiCtx = document.getElementById('confettiCanvas').getContext('2d');
+                this.fireworksCtx = document.getElementById('fireworksCanvas').getContext('2d');
+                
+                // Resize canvas to match window size
+                this.resizeCanvas();
+                window.addEventListener('resize', this.resizeCanvas.bind(this));
                 
                 this.foodDatabase = {
                     comfort: ['Pizza', 'Hamburguesa', 'Pasta', 'Tacos', 'Lasaña', 'Mac & Cheese'],
@@ -1721,7 +1731,50 @@
                     }
                 };
                 
+                this.recipeDatabase = {
+                    'Pizza': {
+                        title: 'Pizza Margarita Casera',
+                        cuisine: 'Italiana',
+                        difficulty: 'Media',
+                        time: '1 hora',
+                        servings: '4 personas',
+                        calories: '800 por porción',
+                        ingredients: [
+                            '250g de harina de fuerza',
+                            '150ml de agua tibia',
+                            '1 cucharadita de sal',
+                            '1 cucharadita de azúcar',
+                            '7g de levadura seca',
+                            '2 cucharadas de aceite de oliva',
+                            '150g de salsa de tomate',
+                            '200g de mozzarella fresca',
+                            'Hojas de albahaca fresca',
+                            'Aceite de oliva virgen extra'
+                        ],
+                        instructions: [
+                            'Mezcla la harina, sal, azúcar y levadura en un bol grande.',
+                            'Añade el agua tibia y el aceite de oliva, mezcla hasta obtener una masa homogénea.',
+                            'Amasa durante 10 minutos hasta que quede elástica y suave.',
+                            'Deja reposar la masa 1 hora en un lugar cálido hasta que doble su volumen.',
+                            'Estira la masa sobre una superficie enharinada y colócala en una bandeja de horno.',
+                            'Extiende la salsa de tomate y añade la mozzarella en rodajas.',
+                            'Hornea a 220°C durante 15-20 minutos hasta que la base esté crujiente.',
+                            'Decora con albahaca fresca y un chorrito de aceite de oliva antes de servir.'
+                        ],
+                        image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000'
+                    },
+                    // More recipes can be added here
+                };
+                
                 this.init();
+            }
+            
+            resizeCanvas() {
+                this.confettiCtx.canvas.width = window.innerWidth;
+                this.confettiCtx.canvas.height = window.innerHeight;
+                
+                this.fireworksCtx.canvas.width = window.innerWidth;
+                this.fireworksCtx.canvas.height = window.innerHeight;
             }
             
             init() {
@@ -1729,12 +1782,12 @@
                 this.setupRoulette();
                 this.updateOptionsDisplay();
                 this.updateStats();
-                this.createParticles();
+                this.updateAchievements();
                 this.showCookieBanner();
                 this.loadInitialRecommendations();
                 
-                // PWA Setup
-                this.setupPWA();
+                // Setup drag and drop for options
+                this.setupDragAndDrop();
                 
                 // Analytics
                 this.trackPageView();
@@ -1747,33 +1800,32 @@
                 const clearButton = document.getElementById('clearButton');
                 const randomButton = document.getElementById('randomButton');
                 const foodInput = document.getElementById('foodInput');
+                const shareButton = document.getElementById('shareButton');
+                const spinAgainButton = document.getElementById('spinAgainButton');
+                const getRecipeButton = document.getElementById('getRecipeButton');
                 
                 // Winner popup buttons
                 const closeWinnerBtn = document.getElementById('closeWinnerBtn');
                 const spinAgainBtn = document.getElementById('spinAgainBtn');
+                
+                // Cookie handling
+                const cookieAccept = document.getElementById('cookieAccept');
+                const cookieReject = document.getElementById('cookieReject');
                 
                 // Check if elements exist before adding listeners
                 if (spinButton) spinButton.addEventListener('click', () => this.spinRoulette());
                 if (addButton) addButton.addEventListener('click', () => this.addFood());
                 if (clearButton) clearButton.addEventListener('click', () => this.clearFoods());
                 if (randomButton) randomButton.addEventListener('click', () => this.fillRandom());
+                if (shareButton) shareButton.addEventListener('click', () => this.shareResult());
+                if (spinAgainButton) spinAgainButton.addEventListener('click', () => this.spinAgain());
+                if (getRecipeButton) getRecipeButton.addEventListener('click', () => this.showRecipe());
                 
                 // Winner popup events
                 if (closeWinnerBtn) closeWinnerBtn.addEventListener('click', () => this.closeWinnerPopup());
                 if (spinAgainBtn) spinAgainBtn.addEventListener('click', () => this.spinAgain());
                 
-                // Input handling
-                if (foodInput) {
-                    foodInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') this.addFood();
-                    });
-                    foodInput.addEventListener('input', this.handleInputValidation.bind(this));
-                }
-                
                 // Cookie handling
-                const cookieAccept = document.getElementById('cookieAccept');
-                const cookieReject = document.getElementById('cookieReject');
-                
                 if (cookieAccept) cookieAccept.addEventListener('click', () => this.acceptCookies());
                 if (cookieReject) cookieReject.addEventListener('click', () => this.rejectCookies());
                 
@@ -1875,6 +1927,7 @@
                         this.showResult(winner);
                         this.updateUserStats(winner);
                         this.generateRecommendations(winner);
+                        this.checkAchievements();
                     }, 300);
                     
                     console.log('¡Resultado final:', winner, '!');
@@ -1908,6 +1961,7 @@
                 this.updateDisplay();
                 this.showNotification(`"${newFood}" añadido`, 'success');
                 this.trackEvent('add_food', { food: newFood });
+                this.saveFoods();
             }
             
             removeFood(index) {
@@ -1919,6 +1973,7 @@
                 const removedFood = this.state.foods.splice(index, 1)[0];
                 this.updateDisplay();
                 this.showNotification(`"${removedFood}" eliminado`, 'info');
+                this.saveFoods();
             }
             
             clearFoods() {
@@ -1926,6 +1981,7 @@
                 this.updateDisplay();
                 this.hideResult();
                 this.showNotification('Todas las opciones eliminadas', 'info');
+                this.saveFoods();
             }
             
             fillRandom() {
@@ -1936,6 +1992,7 @@
                 this.state.foods = this.shuffleArray(categoryFoods).slice(0, 6);
                 this.updateDisplay();
                 this.showNotification(`Llenado con comidas ${randomCategory}`, 'success');
+                this.saveFoods();
             }
             
             updateDisplay() {
@@ -1951,13 +2008,14 @@
                     const card = document.createElement('div');
                     card.className = 'option-card animate-scale-in';
                     card.role = 'listitem';
+                    card.draggable = true;
+                    card.dataset.index = index;
                     card.style.animationDelay = `${index * 0.1}s`;
                     
                     card.innerHTML = `
                         <span>${food}</span>
                         <button 
                             class="remove-btn" 
-                            onclick="app.removeFood(${index})"
                             aria-label="Eliminar ${food}"
                             type="button"
                         >
@@ -1965,14 +2023,23 @@
                         </button>
                     `;
                     
+                    // Add event listener for the remove button
+                    const removeBtn = card.querySelector('.remove-btn');
+                    removeBtn.addEventListener('click', () => this.removeFood(index));
+                    
                     grid.appendChild(card);
                 });
             }
             
             showResult(winner) {
-                // Hide old result container
                 const container = document.getElementById('resultContainer');
-                container.classList.remove('show');
+                const resultText = document.getElementById('resultText');
+                const resultDesc = document.getElementById('resultDescription');
+                
+                resultText.textContent = winner;
+                resultDesc.textContent = this.recommendations[winner]?.description || '¡Una elección perfecta!';
+                
+                container.classList.add('show');
                 
                 // Start epic celebration
                 this.startEpicCelebration(winner);
@@ -1991,165 +2058,136 @@
                 // Show popup with delay for dramatic effect
                 setTimeout(() => {
                     document.getElementById('winnerOverlay').classList.add('show');
+                    document.getElementById('closeWinnerBtn').focus();
                 }, 500);
                 
                 // Start all celebration effects
                 this.createMassiveConfetti();
                 this.createFireworks();
-                this.createFloatingHearts();
-                this.createSparkles();
-                this.createStarbursts();
                 this.playVictorySound();
-                
-                // Screen shake effect
                 this.shakeScreen();
             }
             
             createMassiveConfetti() {
-                const container = document.getElementById('confettiContainer');
-                const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#feca57', '#ff9ff3', '#54a0ff'];
-                const shapes = ['square', 'circle', 'triangle'];
+                const confettiCount = 200;
+                const confettiPieces = [];
                 
-                // Create 200 confetti pieces
-                for (let i = 0; i < 200; i++) {
-                    setTimeout(() => {
-                        const confetti = document.createElement('div');
-                        confetti.className = `confetti ${shapes[Math.floor(Math.random() * shapes.length)]}`;
-                        
-                        // Random properties
-                        const color = colors[Math.floor(Math.random() * colors.length)];
-                        const size = 8 + Math.random() * 8;
-                        const left = Math.random() * 100;
-                        const animationDuration = 2 + Math.random() * 2;
-                        const delay = Math.random() * 2;
-                        
-                        confetti.style.background = color;
-                        confetti.style.width = size + 'px';
-                        confetti.style.height = size + 'px';
-                        confetti.style.left = left + '%';
-                        confetti.style.animationDuration = animationDuration + 's';
-                        confetti.style.animationDelay = delay + 's';
-                        
-                        // Special triangle styling
-                        if (confetti.classList.contains('triangle')) {
-                            confetti.style.borderBottomColor = color;
-                        }
-                        
-                        container.appendChild(confetti);
-                        
-                        // Remove after animation
-                        setTimeout(() => {
-                            if (confetti.parentNode) {
-                                confetti.remove();
-                            }
-                        }, (animationDuration + delay) * 1000);
-                    }, i * 20); // Stagger creation
+                for (let i = 0; i < confettiCount; i++) {
+                    confettiPieces.push({
+                        x: Math.random() * this.confettiCtx.canvas.width,
+                        y: -20,
+                        width: Math.random() * 10 + 5,
+                        height: Math.random() * 10 + 5,
+                        color: this.config.colors[Math.floor(Math.random() * this.config.colors.length)],
+                        speed: Math.random() * 3 + 2,
+                        rotation: Math.random() * 360,
+                        rotationSpeed: Math.random() * 10 - 5
+                    });
                 }
+                
+                const animateConfetti = () => {
+                    this.confettiCtx.clearRect(0, 0, this.confettiCtx.canvas.width, this.confettiCtx.canvas.height);
+                    
+                    confettiPieces.forEach((piece, index) => {
+                        this.confettiCtx.save();
+                        this.confettiCtx.translate(piece.x, piece.y);
+                        this.confettiCtx.rotate(piece.rotation * Math.PI / 180);
+                        
+                        this.confettiCtx.fillStyle = piece.color;
+                        this.confettiCtx.fillRect(-piece.width/2, -piece.height/2, piece.width, piece.height);
+                        
+                        this.confettiCtx.restore();
+                        
+                        // Update position
+                        piece.y += piece.speed;
+                        piece.x += Math.sin(piece.y * 0.1) * 0.5;
+                        piece.rotation += piece.rotationSpeed;
+                        
+                        // Remove if off screen
+                        if (piece.y > this.confettiCtx.canvas.height + 20) {
+                            confettiPieces.splice(index, 1);
+                        }
+                    });
+                    
+                    if (confettiPieces.length > 0) {
+                        requestAnimationFrame(animateConfetti);
+                    }
+                };
+                
+                animateConfetti();
             }
             
             createFireworks() {
+                const fireworks = [];
                 const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#feca57'];
                 
-                for (let i = 0; i < 8; i++) {
-                    setTimeout(() => {
-                        const x = 20 + Math.random() * 60; // Random position across screen
-                        const y = 20 + Math.random() * 40;
-                        
-                        for (let j = 0; j < 12; j++) {
-                            const firework = document.createElement('div');
-                            firework.className = 'firework';
-                            firework.style.background = colors[Math.floor(Math.random() * colors.length)];
-                            firework.style.left = x + '%';
-                            firework.style.top = y + '%';
-                            
-                            // Create explosion pattern
-                            const angle = (j / 12) * Math.PI * 2;
-                            const distance = 50 + Math.random() * 50;
-                            const endX = Math.cos(angle) * distance;
-                            const endY = Math.sin(angle) * distance;
-                            
-                            firework.style.setProperty('--end-x', endX + 'px');
-                            firework.style.setProperty('--end-y', endY + 'px');
-                            firework.style.animation = `firework-explosion 1s ease-out forwards`;
-                            
-                            document.body.appendChild(firework);
-                            
-                            setTimeout(() => firework.remove(), 1000);
-                        }
-                    }, i * 500);
-                }
-            }
-            
-            createFloatingHearts() {
-                const hearts = ['💖', '💝', '💗', '💓', '💕', '💘'];
-                
-                for (let i = 0; i < 20; i++) {
-                    setTimeout(() => {
-                        const heart = document.createElement('div');
-                        heart.className = 'heart';
-                        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                        heart.style.left = Math.random() * 100 + '%';
-                        heart.style.bottom = '0px';
-                        heart.style.fontSize = (15 + Math.random() * 15) + 'px';
-                        heart.style.animationDelay = Math.random() * 2 + 's';
-                        
-                        document.body.appendChild(heart);
-                        
-                        setTimeout(() => heart.remove(), 3000);
-                    }, i * 200);
-                }
-            }
-            
-            createSparkles() {
-                for (let i = 0; i < 50; i++) {
-                    setTimeout(() => {
-                        const sparkle = document.createElement('div');
-                        sparkle.className = 'sparkle';
-                        sparkle.style.left = Math.random() * 100 + '%';
-                        sparkle.style.top = Math.random() * 100 + '%';
-                        sparkle.style.animationDelay = Math.random() * 1 + 's';
-                        
-                        document.body.appendChild(sparkle);
-                        
-                        setTimeout(() => sparkle.remove(), 1500);
-                    }, i * 100);
-                }
-            }
-            
-            createStarbursts() {
+                // Create 5 fireworks
                 for (let i = 0; i < 5; i++) {
                     setTimeout(() => {
-                        const starburst = document.createElement('div');
-                        starburst.className = 'starburst';
-                        starburst.style.left = Math.random() * 100 + '%';
-                        starburst.style.top = Math.random() * 100 + '%';
+                        const x = Math.random() * this.fireworksCtx.canvas.width;
+                        const y = Math.random() * this.fireworksCtx.canvas.height * 0.4;
+                        const particleCount = 80 + Math.floor(Math.random() * 50);
                         
-                        document.body.appendChild(starburst);
-                        
-                        setTimeout(() => starburst.remove(), 2000);
-                    }, i * 800);
+                        fireworks.push({
+                            x,
+                            y,
+                            particles: Array(particleCount).fill().map(() => ({
+                                color: colors[Math.floor(Math.random() * colors.length)],
+                                angle: Math.random() * Math.PI * 2,
+                                speed: Math.random() * 5 + 2,
+                                size: Math.random() * 3 + 1,
+                                alpha: 1
+                            }))
+                        });
+                    }, i * 600);
                 }
-            }
-            
-            shakeScreen() {
-                document.body.style.animation = 'screen-shake 0.5s ease-in-out';
-                setTimeout(() => {
-                    document.body.style.animation = '';
-                }, 500);
                 
-                // Add screen shake keyframes
-                if (!document.querySelector('#shake-styles')) {
-                    const style = document.createElement('style');
-                    style.id = 'shake-styles';
-                    style.textContent = `
-                        @keyframes screen-shake {
-                            0%, 100% { transform: translateX(0); }
-                            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-                            20%, 40%, 60%, 80% { transform: translateX(2px); }
+                const animateFireworks = () => {
+                    this.fireworksCtx.clearRect(0, 0, this.fireworksCtx.canvas.width, this.fireworksCtx.canvas.height);
+                    
+                    fireworks.forEach((firework, fIndex) => {
+                        firework.particles.forEach((particle, pIndex) => {
+                            // Update particle position
+                            particle.speed *= 0.96;
+                            const moveX = Math.cos(particle.angle) * particle.speed;
+                            const moveY = Math.sin(particle.angle) * particle.speed;
+                            
+                            // Update particle alpha
+                            particle.alpha -= 0.01;
+                            
+                            // Draw particle
+                            this.fireworksCtx.globalAlpha = particle.alpha;
+                            this.fireworksCtx.fillStyle = particle.color;
+                            this.fireworksCtx.beginPath();
+                            this.fireworksCtx.arc(
+                                firework.x + moveX, 
+                                firework.y + moveY, 
+                                particle.size, 
+                                0, 
+                                Math.PI * 2
+                            );
+                            this.fireworksCtx.fill();
+                            
+                            // Remove dead particles
+                            if (particle.alpha <= 0 || particle.speed < 0.1) {
+                                firework.particles.splice(pIndex, 1);
+                            }
+                        });
+                        
+                        // Remove dead fireworks
+                        if (firework.particles.length === 0) {
+                            fireworks.splice(fIndex, 1);
                         }
-                    `;
-                    document.head.appendChild(style);
-                }
+                    });
+                    
+                    this.fireworksCtx.globalAlpha = 1;
+                    
+                    if (fireworks.length > 0) {
+                        requestAnimationFrame(animateFireworks);
+                    }
+                };
+                
+                animateFireworks();
             }
             
             playVictorySound() {
@@ -2182,31 +2220,33 @@
                 }
             }
             
-            closeWinnerPopup() {
-                document.getElementById('winnerOverlay').classList.remove('show');
+            shakeScreen() {
+                document.body.style.animation = 'screen-shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 500);
                 
-                // Clear any remaining effects
-                document.querySelectorAll('.confetti, .firework, .heart, .sparkle, .starburst').forEach(el => {
-                    el.remove();
-                });
+                // Add screen shake keyframes
+                if (!document.querySelector('#shake-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'shake-styles';
+                    style.textContent = `
+                        @keyframes screen-shake {
+                            0%, 100% { transform: translateX(0); }
+                            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+                            20%, 40%, 60%, 80% { transform: translateX(2px); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
             }
             
             closeWinnerPopup() {
-                const overlay = document.getElementById('winnerOverlay');
-                if (overlay) {
-                    overlay.classList.remove('show');
-                }
+                document.getElementById('winnerOverlay').classList.remove('show');
                 
-                // Clear any remaining effects
-                document.querySelectorAll('.confetti, .firework, .heart, .sparkle, .starburst').forEach(el => {
-                    el.remove();
-                });
-                
-                // Clear confetti container
-                const confettiContainer = document.getElementById('confettiContainer');
-                if (confettiContainer) {
-                    confettiContainer.innerHTML = '';
-                }
+                // Clear canvases
+                this.confettiCtx.clearRect(0, 0, this.confettiCtx.canvas.width, this.confettiCtx.canvas.height);
+                this.fireworksCtx.clearRect(0, 0, this.fireworksCtx.canvas.width, this.fireworksCtx.canvas.height);
             }
             
             spinAgain() {
@@ -2242,6 +2282,7 @@
             
             hideResult() {
                 document.getElementById('resultContainer').classList.remove('show');
+                document.getElementById('recipePreview').classList.remove('show');
             }
             
             async generateRecommendations(selectedFood) {
@@ -2386,6 +2427,13 @@
                     this.state.userStats.totalSpins++;
                     this.state.userStats.foodFrequency[winner] = (this.state.userStats.foodFrequency[winner] || 0) + 1;
                     this.state.userStats.lastUsed = new Date().toISOString();
+                    
+                    // Update streak
+                    const today = new Date().toISOString().split('T')[0];
+                    if (this.state.userStats.lastUsedDay !== today) {
+                        this.state.userStats.streak = (this.state.userStats.streak || 0) + 1;
+                        this.state.userStats.lastUsedDay = today;
+                    }
                 }
                 
                 this.updateStatsDisplay();
@@ -2397,7 +2445,7 @@
                 
                 document.getElementById('totalSpins').textContent = stats.totalSpins;
                 document.getElementById('userLevel').textContent = this.calculateUserLevel(stats.totalSpins);
-                document.getElementById('streakCount').textContent = stats.currentStreak || 0;
+                document.getElementById('streakCount').textContent = stats.streak || 0;
                 
                 // Find favorite food
                 const frequencies = stats.foodFrequency;
@@ -2419,8 +2467,9 @@
                 const defaultStats = {
                     totalSpins: 0,
                     foodFrequency: {},
-                    currentStreak: 0,
-                    lastUsed: null
+                    streak: 0,
+                    lastUsed: null,
+                    lastUsedDay: null
                 };
                 
                 try {
@@ -2456,6 +2505,100 @@
                 }
             }
             
+            loadFoods() {
+                try {
+                    const saved = localStorage.getItem('rouletteFoods');
+                    return saved ? JSON.parse(saved) : ['Pizza', 'Tacos', 'Sushi', 'Hamburguesa', 'Pasta'];
+                } catch {
+                    return ['Pizza', 'Tacos', 'Sushi', 'Hamburguesa', 'Pasta'];
+                }
+            }
+            
+            saveFoods() {
+                try {
+                    localStorage.setItem('rouletteFoods', JSON.stringify(this.state.foods));
+                } catch (error) {
+                    console.warn('Could not save foods:', error);
+                }
+            }
+            
+            loadAchievements() {
+                const defaultAchievements = {
+                    'first-spin': false,
+                    'five-spins': false,
+                    'ten-foods': false,
+                    'daily-streak': false
+                };
+                
+                try {
+                    const saved = localStorage.getItem('achievements');
+                    return saved ? JSON.parse(saved) : defaultAchievements;
+                } catch {
+                    return defaultAchievements;
+                }
+            }
+            
+            saveAchievements() {
+                try {
+                    localStorage.setItem('achievements', JSON.stringify(this.state.achievements));
+                } catch (error) {
+                    console.warn('Could not save achievements:', error);
+                }
+            }
+            
+            checkAchievements() {
+                const stats = this.state.userStats;
+                const achievements = this.state.achievements;
+                
+                // First spin
+                if (!achievements['first-spin'] && stats.totalSpins >= 1) {
+                    achievements['first-spin'] = true;
+                    this.showAchievement('first-spin');
+                }
+                
+                // Five spins
+                if (!achievements['five-spins'] && stats.totalSpins >= 5) {
+                    achievements['five-spins'] = true;
+                    this.showAchievement('five-spins');
+                }
+                
+                // Ten foods
+                if (!achievements['ten-foods'] && this.state.foods.length >= 10) {
+                    achievements['ten-foods'] = true;
+                    this.showAchievement('ten-foods');
+                }
+                
+                // Daily streak
+                if (!achievements['daily-streak'] && stats.streak >= 3) {
+                    achievements['daily-streak'] = true;
+                    this.showAchievement('daily-streak');
+                }
+                
+                this.saveAchievements();
+                this.updateAchievements();
+            }
+            
+            showAchievement(id) {
+                const card = document.querySelector(`.achievement-card[data-id="${id}"]`);
+                if (card) {
+                    card.classList.add('unlocked');
+                    
+                    // Show notification
+                    const title = card.querySelector('h3').textContent;
+                    this.showNotification(`¡Logro desbloqueado: ${title}!`, 'success');
+                }
+            }
+            
+            updateAchievements() {
+                const achievements = document.querySelectorAll('.achievement-card');
+                achievements.forEach(card => {
+                    const id = card.dataset.id;
+                    if (this.state.achievements[id]) {
+                        card.classList.add('unlocked');
+                    }
+                });
+            }
+            
             // Event Handlers
             handleInputValidation(event) {
                 const input = event.target;
@@ -2471,82 +2614,10 @@
                 }
             }
             
-            handleKeyboardNavigation(event) {
-                // Accessibility: Space bar also spins
-                if (event.code === 'Space' && event.target === document.getElementById('spinButton')) {
-                    event.preventDefault();
-                    this.spinRoulette();
-                }
-                
-                // ESC to close result
-                if (event.code === 'Escape') {
-                    this.hideResult();
-                }
-            }
-            
             handleResize() {
                 // Responsive adjustments
                 this.setupRoulette();
-            }
-            
-            // Effects and Animations
-            createParticles() {
-                const particlesContainer = document.getElementById('particles');
-                
-                for (let i = 0; i < this.config.particleCount; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.animationDelay = Math.random() * 6 + 's';
-                    particle.style.animationDuration = (3 + Math.random() * 3) + 's';
-                    particlesContainer.appendChild(particle);
-                }
-            }
-            
-            createSpinEffects() {
-                // Add visual effects during spin
-                const wheel = document.getElementById('rouletteWheel');
-                wheel.style.boxShadow = '0 0 50px rgba(255, 255, 255, 0.5)';
-                
-                setTimeout(() => {
-                    wheel.style.boxShadow = 'var(--shadow-2xl)';
-                }, this.config.spinDuration);
-            }
-            
-            createCelebrationEffects() {
-                // Confetti-like effect
-                const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#feca57'];
-                
-                for (let i = 0; i < 20; i++) {
-                    setTimeout(() => {
-                        this.createConfetti(colors[Math.floor(Math.random() * colors.length)]);
-                    }, i * 100);
-                }
-            }
-            
-            createConfetti(color) {
-                const confetti = document.createElement('div');
-                confetti.style.position = 'fixed';
-                confetti.style.width = '10px';
-                confetti.style.height = '10px';
-                confetti.style.backgroundColor = color;
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.top = '-10px';
-                confetti.style.zIndex = '9999';
-                confetti.style.borderRadius = '50%';
-                confetti.style.pointerEvents = 'none';
-                
-                document.body.appendChild(confetti);
-                
-                const animation = confetti.animate([
-                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
-                    { transform: `translateY(${window.innerHeight + 100}px) rotate(720deg)`, opacity: 0 }
-                ], {
-                    duration: 3000,
-                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-                });
-                
-                animation.onfinish = () => confetti.remove();
+                this.resizeCanvas();
             }
             
             // Actions
@@ -2586,17 +2657,49 @@
                 }, 1000);
             }
             
-            getRecipe() {
+            showRecipe() {
                 const result = this.state.currentResult;
                 if (!result) return;
                 
-                // Simulate recipe lookup
-                this.showNotification(`Buscando recetas para ${result}...`, 'info');
-                this.trackEvent('get_recipe', { food: result });
+                const recipe = this.recipeDatabase[result];
+                if (!recipe) {
+                    this.showNotification('No hay receta disponible para esta opción', 'warning');
+                    return;
+                }
                 
-                setTimeout(() => {
-                    this.showNotification('¡Próximamente integración con APIs de recetas!', 'info');
-                }, 1500);
+                document.getElementById('recipeTitle').textContent = recipe.title;
+                document.getElementById('recipeCuisine').textContent = `Cocina: ${recipe.cuisine}`;
+                document.getElementById('recipeDifficulty').textContent = `Dificultad: ${recipe.difficulty}`;
+                document.getElementById('recipeTime').textContent = recipe.time;
+                document.getElementById('recipeServings').textContent = recipe.servings;
+                document.getElementById('recipeCalories').textContent = recipe.calories;
+                
+                const recipeImage = document.getElementById('recipeImage');
+                recipeImage.style.backgroundImage = `url('${recipe.image}')`;
+                
+                const ingredientsList = document.getElementById('recipeIngredients');
+                ingredientsList.innerHTML = '';
+                recipe.ingredients.forEach(ingredient => {
+                    const li = document.createElement('li');
+                    li.textContent = ingredient;
+                    ingredientsList.appendChild(li);
+                });
+                
+                const instructionsList = document.getElementById('recipeInstructions');
+                instructionsList.innerHTML = '';
+                recipe.instructions.forEach(instruction => {
+                    const li = document.createElement('li');
+                    li.textContent = instruction;
+                    instructionsList.appendChild(li);
+                });
+                
+                document.getElementById('recipePreview').classList.add('show');
+                
+                // Scroll to recipe
+                document.getElementById('recipePreview').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start'
+                });
             }
             
             // Cookie Management
@@ -2622,35 +2725,65 @@
                 this.showNotification('Cookies rechazadas', 'info');
             }
             
-            // Dark Mode
-            toggleDarkMode() {
-                this.state.preferences.darkMode = !this.state.preferences.darkMode;
-                document.body.classList.toggle('dark-mode', this.state.preferences.darkMode);
-                this.savePreferences();
+            // Drag and Drop
+            setupDragAndDrop() {
+                const optionsGrid = document.getElementById('optionsGrid');
                 
-                const icon = document.querySelector('#darkModeToggle i');
-                icon.className = this.state.preferences.darkMode ? 'fas fa-sun' : 'fas fa-moon';
-            }
-            
-            // PWA
-            setupPWA() {
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('/sw.js')
-                        .then(registration => console.log('SW registered:', registration))
-                        .catch(error => console.log('SW registration failed:', error));
-                }
+                optionsGrid.addEventListener('dragstart', (e) => {
+                    if (e.target.classList.contains('option-card')) {
+                        e.dataTransfer.setData('text/plain', e.target.dataset.index);
+                        e.target.classList.add('dragging');
+                    }
+                });
                 
-                // Install prompt
-                window.addEventListener('beforeinstallprompt', (e) => {
+                optionsGrid.addEventListener('dragend', (e) => {
+                    if (e.target.classList.contains('option-card')) {
+                        e.target.classList.remove('dragging');
+                    }
+                });
+                
+                optionsGrid.addEventListener('dragover', (e) => {
                     e.preventDefault();
-                    this.deferredPrompt = e;
-                    this.showInstallPrompt();
+                    const card = e.target.closest('.option-card');
+                    if (card) {
+                        card.classList.add('drag-over');
+                    }
+                });
+                
+                optionsGrid.addEventListener('dragleave', (e) => {
+                    const card = e.target.closest('.option-card');
+                    if (card) {
+                        card.classList.remove('drag-over');
+                    }
+                });
+                
+                optionsGrid.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                    const toCard = e.target.closest('.option-card');
+                    
+                    if (toCard) {
+                        const toIndex = parseInt(toCard.dataset.index);
+                        this.moveFood(fromIndex, toIndex);
+                    }
+                    
+                    // Remove drag-over class
+                    document.querySelectorAll('.option-card.drag-over').forEach(card => {
+                        card.classList.remove('drag-over');
+                    });
                 });
             }
             
-            showInstallPrompt() {
-                // Could show custom install button
-                console.log('PWA install available');
+            moveFood(fromIndex, toIndex) {
+                if (fromIndex === toIndex) return;
+                
+                const food = this.state.foods[fromIndex];
+                this.state.foods.splice(fromIndex, 1);
+                this.state.foods.splice(toIndex, 0, food);
+                
+                this.updateDisplay();
+                this.saveFoods();
+                this.showNotification('Opción movida', 'info');
             }
             
             // Analytics and Tracking
@@ -2800,76 +2933,6 @@
                     
                     grid.appendChild(card);
                 });
-            }
-        }
-        
-        // Ad Management System
-        class AdManager {
-            constructor() {
-                this.adConfig = {
-                    popunderShown: false,
-                    maxPopunders: 1,
-                    popunderDelay: 30000
-                };
-                
-                this.init();
-            }
-            
-            init() {
-                this.setupAdEvents();
-            }
-            
-            setupAdEvents() {
-                // Popunder control
-                let clickCount = 0;
-                document.addEventListener('click', () => {
-                    clickCount++;
-                    if (clickCount === 3 && !this.adConfig.popunderShown && app.state.cookiesAccepted) {
-                        setTimeout(() => this.showPopunder(), this.adConfig.popunderDelay);
-                    }
-                });
-            }
-            
-            showPopunder() {
-                if (this.adConfig.popunderShown) return;
-                
-                this.adConfig.popunderShown = true;
-                const popup = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
-                
-                if (popup) {
-                    popup.document.write(`
-                        <html>
-                            <head>
-                                <title>Ofertas Gastronómicas</title>
-                                <style>
-                                    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-                                    .container { max-width: 600px; margin: 0 auto; }
-                                    .offer { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; margin: 20px 0; }
-                                    button { background: #ff6b6b; color: white; border: none; padding: 15px 30px; border-radius: 25px; font-size: 16px; cursor: pointer; }
-                                </style>
-                            </head>
-                            <body>
-                                <div class="container">
-                                    <h1>🍕 Ofertas Especiales</h1>
-                                    <div class="offer">
-                                        <h2>Descuentos Exclusivos</h2>
-                                        <p>Hasta 50% de descuento en restaurantes de tu zona</p>
-                                    </div>
-                                    <div class="offer">
-                                        <h2>Apps de Delivery</h2>
-                                        <p>Envío gratis en tu primera orden</p>
-                                    </div>
-                                    <button onclick="window.close()">Cerrar</button>
-                                </div>
-                            </body>
-                        </html>
-                    `);
-                    
-                    // Auto-close after 15 seconds
-                    setTimeout(() => {
-                        if (!popup.closed) popup.close();
-                    }, 15000);
-                }
             }
         }
         
