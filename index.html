@@ -122,7 +122,7 @@
 
         .ad-sidebar {
             width: 300px;
-            height: 250px; /* Adjusted for common ad size */
+            height: 250px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -130,6 +130,16 @@
             background-color: var(--c-bg-glass);
             border: 1px solid var(--c-border);
             margin-top: 1.5rem;
+        }
+        
+        .ad-in-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 2rem;
+            margin: 0 auto;
+            max-width: 468px;
+            min-height: 60px;
         }
 
         .ad-mobile-bottom {
@@ -151,7 +161,17 @@
             .ad-mobile-bottom {
                 display: flex;
             }
+            .ad-sidebar {
+                display: none; /* Hide sidebar ads on mobile */
+            }
         }
+        
+        @media (max-width: 500px) {
+            .ad-in-content {
+                display: none; /* Hide in-content ad on small mobile */
+            }
+        }
+
 
         /*------------------------------------*
          * #LAYOUT & STRUCTURE
@@ -609,6 +629,21 @@
                         <button class="btn btn-secondary" id="clearButton" style="flex: 1;"><i class="fas fa-trash"></i> Limpiar</button>
                     </div>
                 </div>
+                
+                <!-- NEW: In-Content Ad Slot -->
+                <div class="ad-in-content" role="complementary">
+                    <div class="ad-container-468x60">
+                        <script type="text/javascript">
+                            atOptions = {
+                                'key' : 'b7c1e87cc016ef215f451585a61f692e',
+                                'format' : 'iframe',
+                                'height' : 60,
+                                'width' : 468,
+                                'params' : {}
+                            };
+                        </script>
+                    </div>
+                </div>
             </section>
         </div>
 
@@ -635,12 +670,27 @@
                 </div>
             </div>
             
-            <!-- Sidebar Ad -->
+            <!-- Sidebar Ad 1 -->
             <div class="ad-sidebar" role="complementary">
                 <div class="ad-container-300x250">
                      <script type="text/javascript">
                         atOptions = {
                             'key' : '0083cc5c807067ce1179d8b6a66e12f9',
+                            'format' : 'iframe',
+                            'height' : 250,
+                            'width' : 300,
+                            'params' : {}
+                        };
+                    </script>
+                </div>
+            </div>
+            
+            <!-- NEW: Sidebar Ad 2 -->
+            <div class="ad-sidebar" role="complementary">
+                <div class="ad-container-300x250-2">
+                     <script type="text/javascript">
+                        atOptions = {
+                            'key' : '0083cc5c807067ce1179d8b6a66e12f9', // Using same key, ideally would be different
                             'format' : 'iframe',
                             'height' : 250,
                             'width' : 300,
@@ -678,10 +728,10 @@
 
     <!-- Ad Scripts -->
     <script type="text/javascript" src="//www.highperformanceformat.com/59111a4790c57dfb3f35f07ac4854b45/invoke.js"></script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/b7c1e87cc016ef215f451585a61f692e/invoke.js"></script>
     <script type="text/javascript" src="//www.highperformanceformat.com/0083cc5c807067ce1179d8b6a66e12f9/invoke.js"></script>
     <script type="text/javascript" src="//www.highperformanceformat.com/156976c1108724fa46834e940c68aa40/invoke.js"></script>
-    <!-- This ad might be a pop-under or other format, placed last -->
-    <script type="text/javascript" src="//www.highperformanceformat.com/b7c1e87cc016ef215f451585a61f692e/invoke.js"></script>
+    
 
     <script>
     class FoodRouletteApp {
@@ -905,7 +955,6 @@
         }
 
         clearFoods() {
-            // FIX: Removed confirm() which is problematic in some environments.
             this.state.foods = [];
             this.updateAndSave();
         }
